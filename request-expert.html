@@ -1,1 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Request Expert</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-black text-white">
 
+<!-- HEADER -->
+<header class="p-4 border-b border-gray-700 flex justify-between">
+    <h1 class="text-xl font-bold text-cyan-400">Cyber গোয়েন্দা</h1>
+    <a href="index.html" class="text-gray-300 hover:text-cyan-400">Home</a>
+</header>
+
+<section class="section-box">
+<div class="max-w-2xl mx-auto auth-box">
+<h2 class="text-3xl font-bold text-cyan-400 mb-6 text-center">
+Request Expert
+</h2>
+
+<form id="expertForm" class="space-y-4">
+
+<input type="hidden" name="incident_id"
+value="<?= $_GET['incident_id'] ?? '' ?>">
+
+<input type="text" name="full_name"
+placeholder="Full Name" class="auth-input" required>
+
+<input type="email" name="email"
+placeholder="Email" class="auth-input" required>
+
+<input type="text" name="business_name"
+placeholder="Business Name" class="auth-input" required>
+
+<textarea name="reason"
+placeholder="Why do you need an expert?"
+class="auth-input" rows="4" required></textarea>
+
+<button class="auth-btn w-full">
+Submit Request
+</button>
+
+</form>
+</div>
+</section>
+
+<!-- POPUP -->
+<div id="popup"
+class="fixed bottom-6 right-6 hidden bg-green-500 text-black px-6 py-3 rounded shadow-lg font-semibold">
+Request submitted successfully ✔
+</div>
+
+<script>
+const form = document.getElementById('expertForm');
+const popup = document.getElementById('popup');
+
+form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    const res = await fetch('backend/request_expert.php',{
+        method:'POST',
+        body: new FormData(form)
+    });
+
+    const data = await res.json();
+
+    if(data.status === 'success'){
+        popup.classList.remove('hidden');
+        form.reset();
+
+        setTimeout(()=>{
+            popup.classList.add('hidden');
+        },3000);
+    }
+});
+</script>
+
+</body>
+</html>

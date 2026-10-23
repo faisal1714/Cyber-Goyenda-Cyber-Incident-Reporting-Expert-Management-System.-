@@ -1,1 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit Incident</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-black text-white font-sans">
 
+    <!-- HEADER -->
+    <header class="fixed top-0 left-0 w-full bg-black/60 backdrop-blur-md p-4 flex justify-between items-center border-b border-gray-700 z-50">
+    <h1 class="text-xl font-bold">
+        <span class="text-cyan-400">Cyber</span>
+        <span class="text-white"> গোয়েন্দা</span>
+    </h1>
+        <nav class="space-x-6 text-lg">
+            <a href="index.html" class="hover:text-cyan-400 transition">Home</a>
+            <a href="#form-section" class="hover:text-cyan-400 transition">Submit</a>
+            <a href="#contact" class="hover:text-cyan-400 transition">Contact</a>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="h-64 flex items-center justify-center bg-cover bg-center hero-bg mt-16">
+        <div class="text-center hero-card">
+            <h1 class="text-4xl font-bold text-cyan-400 mb-4 animate-pulse">Submit Your Cyber Incident</h1>
+            <p class="text-gray-300 text-lg">Fill out the form below to report a security incident</p>
+        </div>
+    </section>
+
+    <!-- INCIDENT FORM -->
+<section id="form-section" class="py-16 bg-gray-900">
+    <div class="max-w-3xl mx-auto p-6 auth-card">
+
+        <form action="backend/submit_incident.php" method="POST" class="space-y-4">
+
+            <!-- Incident Type -->
+            <label class="block text-gray-300 font-semibold">Incident Type</label>
+            <select name="type" class="auth-input" required>
+                <option value="">Select Type</option>
+                <option value="Phishing">Phishing</option>
+                <option value="Malware">Malware</option>
+                <option value="DDoS">DDoS</option>
+                <option value="Unauthorized Access">Unauthorized Access</option>
+                <option value="Unknown">Unknown (Not sure)</option>
+            </select>
+
+            <!-- Description -->
+            <label class="block text-gray-300 font-semibold">Description</label>
+            <textarea name="description" class="auth-input"
+                placeholder="Example: My website is down / site not loading / suspicious login"
+                rows="5" required></textarea>
+
+            <!-- Severity -->
+            <label class="block text-gray-300 font-semibold">Severity</label>
+            <select name="severity" class="auth-input" required>
+                <option value="">Select Severity</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Critical">Critical</option>
+            </select>
+
+            <!-- Timestamp (optional, backend auto নেয়) -->
+            <label class="block text-gray-300 font-semibold">Timestamp</label>
+            <input type="text" class="auth-input" name="timestamp" id="timestamp" readonly />
+
+            <button type="submit" class="auth-btn w-full">
+                Submit Incident
+            </button>
+        </form>
+
+    </div>
+</section>
+
+
+            <!-- RESULT / PDF SECTION -->
+            <div id="result" class="hidden mt-6 p-4 border border-cyan-400 rounded">
+                <h3 id="resType" class="text-xl font-bold text-green-400"></h3>
+                <p id="resSeverity" class="text-gray-300 mt-1"></p>
+                <p id="resDesc" class="text-gray-400 mt-1"></p>
+                <a id="downloadPdf" href="#" class="hbtn green mt-3 inline-block">Download PDF</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-20 bg-gray-900 text-center">
+        <div class="max-w-2xl mx-auto contact-card">
+            <h2 class="text-3xl font-bold text-cyan-400 mb-6">Contact Us</h2>
+            <p class="text-gray-300">Email: support@cybergoyenda.com</p>
+            <p class="text-gray-300">Phone: +880 1234 567 890</p>
+            <p class="text-gray-300">Location: Chattogram, Bangladesh</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black text-center p-6 text-gray-500 border-t border-gray-800">
+        © 2025 Cyber Protection — All Rights Reserved.
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Auto-fill timestamp
+        const timestampInput = document.getElementById('timestamp');
+        if(timestampInput){
+            const now = new Date();
+            timestampInput.value = now.toISOString().slice(0, 19).replace('T', ' ');
+        }
+
+        // Form submit
+        const incidentForm = document.getElementById('incidentForm');
+        incidentForm.addEventListener('submit', function(e){
+            e.preventDefault();
+
+            const type = document.getElementById('incidentType').value;
+            const severity = document.getElementById('severity').value;
+            const description = document.getElementById('description').value;
+            const timestamp = timestampInput.value;
+
+            fetch('submit_incident.php',{
+                method:'POST',
+                headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                body: `type=${encodeURIComponent(type)}&severity=${encodeURIComponent(severity)}&description=${encodeURIComponent(description)}&timestamp=${encodeURIComponent(timestamp)}`
+            })
+            .then(res=>res.json())
+            .then(data=>{
+                const resultDiv = document.getElementById('result');
+                resultDiv.classList.remove('hidden');
+                const downloadBtn = document.getElementById('downloadPdf');
+
+                if(data.status==='match'){
+                    document.getElementById('resType').innerText = 'Incident: ' + data.incident.type;
+                    document.getElementById('resSeverity').innerText = 'Severity: ' + data.incident.severity;
+                    document.getElementById('resDesc').innerText = 'Description: ' + data.incident.description;
+
+                    downloadBtn.style.display = 'inline-block';
+                    downloadBtn.href = 'generate_pdf.php?id=' + data.incident.id;
+                }else if(data.status==='expert_request'){
+                    document.getElementById('resType').innerText = 'No matching incident found.';
+                    document.getElementById('resSeverity').innerText = '';
+                    document.getElementById('resDesc').innerText = 'You can request a security expert.';
+                    downloadBtn.style.display = 'none';
+                }
+
+                incidentForm.reset();
+                timestampInput.value = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            });
+        });
+    </script>
+</body>
+</html>
