@@ -1,1 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protect Your Business</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-black text-white">
 
+<!-- HEADER -->
+<header class="fixed top-0 left-0 w-full bg-black/60 backdrop-blur-md p-4 flex justify-between items-center border-b border-gray-700 z-50">
+    <h1 class="text-xl font-bold">
+        <span class="text-cyan-400">Cyber</span>
+        <span class="text-white"> গোয়েন্দা</span>
+    </h1>
+        <nav class="flex space-x-4 text-lg">
+        <a href="#auth" class="hover:text-cyan-400 transition">Login/Register</a>
+        <a href="#faq" class="hover:text-cyan-400 transition">FAQ</a>
+        <a href="#contact" class="hover:text-cyan-400 transition">Contact</a>
+        <a href="request-expert.html" class="hover:text-cyan-400 transition">Request Expert</a>
+        <a href="admin-login.html" class="hover:text-red-400 transition font-bold">Admin Login</a>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section class="h-screen flex items-center justify-center hero-bg">
+    <div class="hcard">
+        <img src="assets/images/lg.png" class="mx-auto h-32 mb-4" />
+        <h1 class="text-5xl font-bold text-cyan-400 drop-shadow-lg mb-4 animate-pulse">Protect Your Business</h1>
+        <p class="text-gray-300 text-lg mb-6 animate-slide-up">Detect • Analyze • Respond — Instantly & Automatically</p>
+        <a href="#auth" class="hbtn">Submit Incident</a>
+        <a href="request-expert.html" class="hbtn green ml-2">Request Expert</a>
+    </div>
+</section>
+
+<!-- SUCCESS COUNTER -->
+<section class="section-box text-center">
+    <div class="max-w-4xl mx-auto p-8 hcard">
+        <h2 class="text-3xl font-bold text-cyan-400 mb-6">আমরা এখন পর্যন্ত সফলভাবে সমাধান করেছি</h2>
+        <div class="text-6xl font-extrabold text-green-400 animate-pulse" id="counter">204</div>
+        <p class="text-gray-400 mt-2">Cyber Incidents</p>
+    </div>
+</section>
+
+<!-- LOGIN / REGISTER -->
+<section class="section-box" id="auth">
+    <div class="max-w-2xl mx-auto auth-box">
+        <div class="flex justify-center mb-6">
+            <button type="button" id="loginTab" class="auth-btn">Login</button>
+            <button type="button" id="registerTab" class="auth-btn ml-2">Register</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div id="loginForm" class="space-y-4">
+            <form action="backend/login.php" method="POST" id="loginForm">
+                <input type="email" name="email" placeholder="Email" class="auth-input" required/>
+                <input type="password" name="password" placeholder="Password" class="auth-input" required/>
+                <button type="submit" class="auth-btn w-full">Login</button>
+            </form>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div id="registerForm" class="space-y-4 hidden">
+            <form action="backend/register.php" method="POST" id="registerForm">
+                <input type="text" name="name" placeholder="Full Name" class="auth-input" required />
+                <input type="email" name="email" placeholder="Email" class="auth-input" required />
+                <input type="password" name="password" placeholder="Password" class="auth-input" required />
+
+                <button type="submit" class="auth-btn green w-full">Register</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Tabs switch
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    loginTab.addEventListener('click', () => {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+    });
+
+    registerTab.addEventListener('click', () => {
+        registerForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+    });
+</script>
+<!--Faq-->
+<!-- FAQ -->
+<section id="faq" class="section-box">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-4xl font-bold text-center text-cyan-400 mb-10">Frequently Asked Questions</h2>
+
+        <div class="faq-container space-y-4">
+            <!-- FAQ 1 -->
+            <div class="faq-box border border-cyan-400 rounded-lg p-4 cursor-pointer">
+                <div class="faq-q font-semibold text-cyan-400">1. সিস্টেম কীভাবে incident match করে?</div>
+                <div class="faq-a hidden mt-2 text-gray-300">
+                    ডাটাবেইসে attack pattern এর সাথে user provided data compare করা হয়।
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-box border border-cyan-400 rounded-lg p-4 cursor-pointer">
+                <div class="faq-q font-semibold text-cyan-400">2. PDF রিপোর্ট কী থাকে?</div>
+                <div class="faq-a hidden mt-2 text-gray-300">
+                    Attack type, severity, symptoms, recommended actions এবং timestamp।
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-box border border-cyan-400 rounded-lg p-4 cursor-pointer">
+                <div class="faq-q font-semibold text-cyan-400">3. Expert assign কীভাবে হয়?</div>
+                <div class="faq-a hidden mt-2 text-gray-300">
+                    User request করলে admin manual ভাবে expert assign করে।
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const faqQuestions = document.querySelectorAll(".faq-q");
+
+    faqQuestions.forEach(q => {
+        q.addEventListener("click", () => {
+            const ans = q.nextElementSibling;
+            if(ans){
+                ans.classList.toggle("hidden"); // Tailwind compatible
+            }
+        });
+    });
+});
+</script>
+
+
+<!-- CONTACT -->
+<section id="contact" class="section-box">
+    <div class="max-w-2xl mx-auto contact-box text-center">
+        <h2 class="text-3xl font-bold text-cyan-400 mb-6">Contact Us</h2>
+        <p>Email: support@cybergoyenda.com</p>
+        <p>Phone: +880 1834 794 153</p>
+        <p>Location: Chattogram, Bangladesh</p>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-black text-center p-6 text-gray-500 border-t border-gray-800">
+    © 2025 Protect Your Business — All Rights Reserved by Ahmed Wasi,Jisan & Faisal.
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
