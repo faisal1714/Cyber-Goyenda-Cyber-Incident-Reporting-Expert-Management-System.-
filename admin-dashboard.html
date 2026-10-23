@@ -1,1 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
 
+<body class="bg-gray-900 text-white">
+
+<header class="p-4 bg-black flex justify-between items-center">
+    <h1 class="text-cyan-400 font-bold text-2xl">Admin Dashboard</h1>
+
+    <div class="space-x-3">
+        <a href="index.html"
+           class="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition">
+            Home
+        </a>
+
+        <button onclick="adminLogout()"
+            class="px-4 py-2 bg-red-600 rounded hover:bg-red-500 transition">
+            Logout
+        </button>
+    </div>
+</header>
+
+
+<main class="p-6 space-y-8">
+
+<!-- STATS -->
+<section class="flex gap-4">
+<div class="bg-gray-800 p-4 rounded w-1/3 text-center">
+<h3>Total Incidents</h3>
+<p id="total" class="text-cyan-400 text-2xl">0</p>
+</div>
+
+<div class="bg-gray-800 p-4 rounded w-1/3 text-center">
+<h3>Completed</h3>
+<p id="completed" class="text-green-400 text-2xl">0</p>
+</div>
+
+<div class="bg-gray-800 p-4 rounded w-1/3 text-center">
+<h3>Pending</h3>
+<p id="pending" class="text-yellow-400 text-2xl">0</p>
+</div>
+</section>
+
+<!-- INCIDENT TABLE -->
+<section>
+<h2 class="text-xl font-bold mb-3">User Incident Reports</h2>
+<table class="w-full border border-gray-700">
+<thead class="bg-gray-800">
+<tr>
+<th class="p-2">ID</th>
+<th>User</th>
+<th>Type</th>
+<th>Severity</th>
+<th>Status</th>
+<th>Expert</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="incidentTable"></tbody>
+</table>
+</section>
+
+<!-- ASSIGN EXPERT -->
+<section class="bg-gray-800 p-4 rounded">
+<h2 class="font-bold mb-2">Assign Expert</h2>
+<form id="assignForm" class="flex gap-2">
+<select id="incidentSelect" class="auth-input"></select>
+<select id="expertSelect" class="auth-input"></select>
+<button class="auth-btn green">Assign</button>
+</form>
+</section>
+
+<!-- EXPERT REQUESTS -->
+<section>
+<h2 class="text-xl font-bold mb-3">Expert Requests</h2>
+<table class="w-full border border-gray-700">
+<thead class="bg-gray-800">
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Reason</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="expertRequestTable"></tbody>
+</table>
+</section>
+
+</main>
+
+<script src="assets/js/admin.js"></script>
+</body>
+</html>
