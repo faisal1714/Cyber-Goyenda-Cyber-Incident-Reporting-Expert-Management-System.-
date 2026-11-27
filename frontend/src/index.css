@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+@layer components {
+  .section-box {
+    @apply py-12 px-4;
+  }
+
+  .glow-box {
+    @apply rounded-2xl p-8 border border-cyan-500 bg-black/75;
+    box-shadow: 0 0 20px #06b6d4;
+  }
+
+  .hero-btn {
+    @apply inline-block bg-cyan-500 text-black font-bold py-3 px-8 rounded-lg transition-all duration-300;
+  }
+  .hero-btn:hover {
+    @apply bg-cyan-400 scale-105;
+    box-shadow: 0 0 15px #22d3ee;
+  }
+  .hero-btn.green {
+    @apply bg-green-500;
+  }
+  .hero-btn.green:hover {
+    @apply bg-green-400;
+    box-shadow: 0 0 15px #4ade80;
+  }
+
+  .auth-input {
+    @apply w-full p-3 rounded-lg border border-gray-700 bg-black text-white mb-3 outline-none focus:border-cyan-500;
+  }
+
+  .auth-btn {
+    @apply w-full py-3 rounded-lg font-bold bg-cyan-500 text-black transition-all duration-300;
+  }
+  .auth-btn:hover {
+    @apply bg-cyan-400 scale-105;
+    box-shadow: 0 0 15px #22d3ee;
+  }
+  .auth-btn.green {
+    @apply bg-green-500;
+  }
+  .auth-btn.green:hover {
+    @apply bg-green-400;
+    box-shadow: 0 0 15px #4ade80;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slide-up {
+  animation: slide-up 0.8s ease forwards;
+}
